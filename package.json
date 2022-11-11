@@ -9,10 +9,10 @@
     "format": "prettier --write '**/*.ts'",
     "format-check": "prettier --check '**/*.ts'",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build --source-map --license licenses.txt",
+    "package": "set NODE_OPTIONS=--openssl-legacy-provider && ncc build --source-map --license licenses.txt",
     "test": "jest",
     "test:w": "jest --watchAll",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all": "set NODE_OPTIONS=--openssl-legacy-provider && npm run build && npm run format && npm run lint && npm run package && npm test"
   },
   "repository": {
     "type": "git",
