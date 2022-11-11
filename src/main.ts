@@ -1,13 +1,12 @@
 import * as core from '@actions/core';
 import {inspect} from 'util';
 import {getInputs, getOctokit, getOwnerRepo} from './common';
-import {createActionRequest, DispatchEventRequest} from './create-action-request';
+import {createActionRequest} from './create-action-request';
 
 async function run(): Promise<void> {
   const inputs = getInputs();
   const [owner, repo] = getOwnerRepo(inputs.owner, inputs.repository);
   const octokit = getOctokit(inputs.authToken, 'github-action');
-  let request: DispatchEventRequest;
 
   try {
     request = createActionRequest(owner, repo);
