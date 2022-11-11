@@ -7,7 +7,7 @@ async function run(): Promise<void> {
   const inputs = getInputs();
   const [owner, repo] = getOwnerRepo(inputs.owner, inputs.repository);
   const octokit = getOctokit(inputs.authToken, 'github-action');
-
+  let request;
   try {
     request = createActionRequest(owner, repo);
     core.debug(`dispatch event request: ${inspect(request)}`);
