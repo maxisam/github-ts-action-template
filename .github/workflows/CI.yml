@@ -18,16 +18,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
 
-      - name: Set Node.js 16.x
+      - name: Set Node.js 18.x
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           cache: 'yarn'
 
       - run: yarn install
 
-      - run: yarn all
+      - run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
+          yarn all
 
       - name: Compare the expected and actual dist/ directories
         id: diff
@@ -45,13 +49,4 @@ jobs:
           git config --local user.name "maxisam"
           git add dist/
           git commit -m "chore: build, dist updated"
-          git push origin ${{ github.ref_name }}
-          
-  repo-dispatch:
-    runs-on: ubuntu-latest
-    needs: [build]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: ./
-        with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
+          git push origin ${{ github.event.pull_request.head.ref || github.ref_name }}
